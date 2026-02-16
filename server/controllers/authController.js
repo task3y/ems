@@ -22,8 +22,12 @@ const login = async(req, res) => {
             res.status(200).json({ success: true, token, user: { id: user._id, username: user.username, role: user.role } });
 
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error', error });
+        res.status(500).json({ success: false, error:error.message });
     }
 }
 
-export { login };
+const verify = async (req, res) => {
+    return res.status(200).json({ success: true, user: req.user });
+}
+
+export { login, verify };
