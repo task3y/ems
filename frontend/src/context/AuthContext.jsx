@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
-import { Children } from 'react';
 import { createContext, useState } from 'react';
 
 const userContext = createContext();
@@ -24,6 +23,7 @@ function authContext({ children }) {
           }
         } else {
           setUser(null);
+          setLoading(false);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
