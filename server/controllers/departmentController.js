@@ -26,8 +26,32 @@ const getDepartment = async (req, res) => {
     }
 }
 
+const editDepartment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const department = await Department.findById({_id: id})
+        return res.status(200).json({ success: true, department }); 
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Server error' });
+    }
+}
+
+const updateDepartment = async (req, res) => {
+    try {
+        const { id } = req.params;   
+        const { departmentName, description } = req.body;
+        const updatedDepartment = await Department.findByIdAndUpdate(id, { 
+            departmentName, description 
+        }, { new: true });
+        return res.status(200).json({ success: true, message: 'Department updated successfully', department: updatedDepartment });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Server error' });
+    }
+}
 
 export {
     addDepartment,
-    getDepartment
+    getDepartment,
+    editDepartment,
+    updateDepartment
 }

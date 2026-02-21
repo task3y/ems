@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 const colums = [
     {
         name: "Department ID",
@@ -22,12 +23,28 @@ const colums = [
     }
 ]
 
-const DepartmentButtons = () => {
+const DepartmentButtons = ({ _id }) => {
+    const navigate = useNavigate();
     return (
-        <div>
-            <button>Edit</button>
-            <button>Delete</button>
-        </div>
+        <div className="flex items-center gap-3">
+
+  {/* Edit */}
+  <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-blue-100"
+    onClick={() => navigate(`/admin-dashboard/department/${_id}`)}>
+    <span className="material-symbols-rounded text-blue-600 text-xl">
+      edit
+    </span>
+  </button>
+
+  {/* Delete */}
+  <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-red-100">
+    <span className="material-symbols-rounded text-red-600 text-xl">
+      delete
+    </span>
+  </button>
+
+</div>
+
     )
 }
 
