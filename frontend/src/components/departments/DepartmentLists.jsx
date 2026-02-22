@@ -4,10 +4,17 @@ import DataTable from 'react-data-table-component';
 import {colums, DepartmentButtons } from '../../utils/DepartmentHelper';
 import axios from 'axios';
 
+
 const DepartmentLists = () => {
   const [departments, setDepartments] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+
+  const onDepartmentDelete = (id) => {
+    const data = departments.filter((department) => department._id !== id);
+    setDepartments(data);
+  }
   
   useEffect(() => {
     // Fetch department data from the server and update the state
@@ -23,10 +30,11 @@ const DepartmentLists = () => {
           const data = response.data.departments.map((department) => ({
             _id: department._id,
             departmentName: department.departmentName,
-            actions: (<DepartmentButtons _id={department._id} />),
+            actions: (<DepartmentButtons _id={department._id} onDepartmentDelete={onDepartmentDelete} />),
             status: department.status,
           }));
           setDepartments(data);
+          setFilteredData(data);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -39,9 +47,13 @@ const DepartmentLists = () => {
     fetchDepartments();
   }, []);
 
-  const filteredDepartments = departments.filter((dept) =>
-    dept.departmentName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredDepartments = (e) => {
+    const records = departments.filter((dep) =>
+      dep.departmentName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredData(records);
+    setSearchTerm(e.target.value);
+  }
 
 
   return (
@@ -71,7 +83,7 @@ const DepartmentLists = () => {
                   type="text"
                   placeholder="Search department..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={filteredDepartments}
                   className="w-64 pl-10 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 />
                 <span className="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
@@ -84,7 +96,10 @@ const DepartmentLists = () => {
           <div>
             <DataTable 
               columns={colums} 
-              data={departments}
+              data={filteredData}
+              pagination
+              highlightOnHover
+              pointerOnHover
             />
           </div>
         </div>
