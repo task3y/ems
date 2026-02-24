@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 
@@ -13,11 +13,14 @@ function authContext({ children }) {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await axios.get('http://localhost:5000/api/auth/verify', {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const response = await axios.get(
+            'http://localhost:5000/api/auth/verify',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          });
+          );
           if (response.data.success) {
             setUser(response.data.user);
           }
@@ -46,7 +49,6 @@ function authContext({ children }) {
   return (
     <userContext.Provider value={{ user, login, logout, loading }}>
       {children}
-
     </userContext.Provider>
   );
 }

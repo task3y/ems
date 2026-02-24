@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import {colums, DepartmentButtons } from '../../utils/DepartmentHelper';
+import { colums, DepartmentButtons } from '../../utils/DepartmentHelper';
 import axios from 'axios';
-
 
 const DepartmentLists = () => {
   const [departments, setDepartments] = useState([]);
@@ -14,23 +13,31 @@ const DepartmentLists = () => {
   const onDepartmentDelete = (id) => {
     const data = departments.filter((department) => department._id !== id);
     setDepartments(data);
-  }
-  
+  };
+
   useEffect(() => {
     // Fetch department data from the server and update the state
     const fetchDepartments = async () => {
       setDepLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/department', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        const response = await axios.get(
+          'http://localhost:5000/api/department',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           }
-        })
+        );
         if (response.data.success) {
           const data = response.data.departments.map((department) => ({
             _id: department._id,
             departmentName: department.departmentName,
-            actions: (<DepartmentButtons _id={department._id} onDepartmentDelete={onDepartmentDelete} />),
+            actions: (
+              <DepartmentButtons
+                _id={department._id}
+                onDepartmentDelete={onDepartmentDelete}
+              />
+            ),
             status: department.status,
           }));
           setDepartments(data);
@@ -53,12 +60,13 @@ const DepartmentLists = () => {
     );
     setFilteredData(records);
     setSearchTerm(e.target.value);
-  }
-
+  };
 
   return (
     <>
-      {depLoading ? <div>Loading departments...</div> : (
+      {depLoading ? (
+        <div>Loading departments...</div>
+      ) : (
         <div>
           <div>
             <h3 className="text-3xl font-bold text-gray-800 mb-4 ml-3 mt-4">
@@ -68,15 +76,15 @@ const DepartmentLists = () => {
           <div className="flex items-center justify-between mb-2 ml-2">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100">
-                  <span className="material-symbols-rounded text-gray-600 text-lg">
+                <span className="material-symbols-rounded text-gray-600 text-lg">
                   format_list_bulleted
-                  </span>
+                </span>
               </div>
               <h2 className="text-xl font-semibold text-gray-800">
                 Department List
               </h2>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="relative">
                 <input
@@ -90,12 +98,17 @@ const DepartmentLists = () => {
                   search
                 </span>
               </div>
-                <Link to="/admin-dashboard/add-department" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mr-2 rounded-xl text-sm font-medium transition">+ Add Department</Link>
+              <Link
+                to="/admin-dashboard/add-department"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mr-2 rounded-xl text-sm font-medium transition"
+              >
+                + Add Department
+              </Link>
             </div>
           </div>
           <div>
-            <DataTable 
-              columns={colums} 
+            <DataTable
+              columns={colums}
               data={filteredData}
               pagination
               highlightOnHover
@@ -105,7 +118,7 @@ const DepartmentLists = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default DepartmentLists;

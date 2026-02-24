@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
 import EmployeeDashboard from './pages/EmployeeDashboard';
@@ -8,34 +8,51 @@ import DepartmentLists from './components/departments/DepartmentLists';
 import AdminSummary from './components/dashboard/AdminSummary';
 import AddDepartment from './components/departments/AddDepartment';
 import EditDepartment from './components/departments/EditDepartment';
+import EmployeeLists from './components/employee/EmployeeLists';
+import AddEmployee from './components/employee/AddEmployee';
 
 function App() {
-
   return (
-   <BrowserRouter>
-     <Routes>
-       <Route path='/' element={<Navigate to="/admin-dashboard" />} />
-       <Route path='/login' element={<Login/>} 
-       />
-       <Route path='/admin-dashboard' element={
-        <PrivateRoutes>
-          <RoleBaseRoutes requiredRole={['admin']}>
-          <AdminDashboard />
-          </RoleBaseRoutes>
-        </PrivateRoutes>
-        }>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/admin-dashboard" />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <PrivateRoutes>
+              <RoleBaseRoutes requiredRole={['admin']}>
+                <AdminDashboard />
+              </RoleBaseRoutes>
+            </PrivateRoutes>
+          }
+        >
           <Route index element={<AdminSummary />} />
-          <Route path="/admin-dashboard/departments" element={<DepartmentLists />} />
-          <Route path="/admin-dashboard/add-department" element={<AddDepartment />} />
-          <Route path="/admin-dashboard/department/:id" element={<EditDepartment />} />
-       </Route>
-         
-        
+          <Route
+            path="/admin-dashboard/departments"
+            element={<DepartmentLists />}
+          />
+          <Route
+            path="/admin-dashboard/add-department"
+            element={<AddDepartment />}
+          />
+          <Route
+            path="/admin-dashboard/department/:id"
+            element={<EditDepartment />}
+          />
+          <Route
+            path="/admin-dashboard/employees"
+            element={<EmployeeLists />}
+          />
+          <Route
+            path="/admin-dashboard/add-employee"
+            element={<AddEmployee />}
+          />
+        </Route>
 
-        
-       <Route path='/employee-dashboard' element={<EmployeeDashboard />} />
-     </Routes>
-   </BrowserRouter>
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
