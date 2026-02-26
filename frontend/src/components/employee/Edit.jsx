@@ -1,30 +1,25 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchDepartments } from '../../utils/EmployeeHelper';
 
-const AddEmployee = () => {
-  const [departments, setDepartments] = useState([]);
-  const [formData, setformData] = useState({});
-
-  const [employeeName, setEmployeeName] = useState({
+const Edit = () => {
+  const [employee, setEmployee] = useState({
     name: '',
-    email: '',
     phoneNumber: '',
-    status: 'Active',
     department: '',
-    role: '',
-    password: '',
     payroll: '',
-    payroll_id: '',
-    contractType: 'Full-Time',
+    salary: 0,
+    contractType: '',
+    status: '',
   });
-
+  const [departments, setDepartments] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setEmployeeName((prevState) => ({
+    setEmployee((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -33,9 +28,9 @@ const AddEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/employee/add',
-        employeeName,
+      const response = await axios.put(
+        `http://localhost:5000/api/employee/${id}`,
+        employee,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -61,6 +56,42 @@ const AddEmployee = () => {
     getDepartments();
   }, []);
 
+  useEffect(() => {
+    const fetchEmployee = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/employee/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+        console.log('FULL RESPONSE:', response);
+        console.log('DATA:', response.data);
+        console.log('EMP:', response.data.employee);
+
+        if (response.data.success) {
+          const employee = response.data.employee;
+          setEmployee((prev) => ({
+            ...prev,
+            name: employee.name,
+            phoneNumber: employee.phoneNumber,
+            department: employee.department,
+            payroll: employee.payroll,
+            contractType: employee.contractType,
+            status: employee.status,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEmployee();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -70,7 +101,7 @@ const AddEmployee = () => {
           <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
         </div>
         <h3 className="text-3xl font-bold flex items-center justify-center mb-10 text-gray-800">
-          Add Employee
+          Edit Employee
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-6">
@@ -86,44 +117,9 @@ const AddEmployee = () => {
                   type="text"
                   id="name"
                   name="name"
+                  value={employee.name}
                   onChange={handleChange}
                   placeholder="Insert Name"
-                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="username"
-                className="text-sm font-medium text-gray-700 mb-2 block"
-              >
-                Username
-              </label>
-              <div>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  onChange={handleChange}
-                  placeholder="username"
-                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-700 mb-2 block"
-              >
-                Email
-              </label>
-              <div>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  onChange={handleChange}
-                  placeholder="Insert Email"
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 />
               </div>
@@ -140,26 +136,9 @@ const AddEmployee = () => {
                   type="text"
                   id="phoneNumber"
                   name="phoneNumber"
+                  value={employee.phoneNumber}
                   onChange={handleChange}
                   placeholder="Phone Number"
-                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-700 mb-2 block"
-              >
-                Password
-              </label>
-              <div>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  onChange={handleChange}
-                  placeholder="*********"
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 />
               </div>
@@ -187,26 +166,7 @@ const AddEmployee = () => {
                 </select>
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="role"
-                className="text-sm font-medium text-gray-700 mb-2 block"
-              >
-                Role
-              </label>
-              <div>
-                <select
-                  name="role"
-                  onChange={handleChange}
-                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
-                  required
-                >
-                  <option value="">Select Role</option>
-                  <option value="admin">Admin</option>
-                  <option value="employee">Employee</option>
-                </select>
-              </div>
-            </div>
+
             <div>
               <label
                 htmlFor="payroll"
@@ -219,26 +179,9 @@ const AddEmployee = () => {
                   type="number"
                   id="payroll"
                   name="payroll"
+                  value={employee.payroll}
                   onChange={handleChange}
                   placeholder="Payroll"
-                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="payroll_id"
-                className="text-sm font-medium text-gray-700 mb-2 block"
-              >
-                Payroll ID
-              </label>
-              <div>
-                <input
-                  type="text"
-                  id="payroll_id"
-                  name="payroll_id"
-                  onChange={handleChange}
-                  placeholder="Payroll ID"
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 />
               </div>
@@ -253,6 +196,7 @@ const AddEmployee = () => {
               <div>
                 <select
                   name="contractType"
+                  value={employee.contractType}
                   onChange={handleChange}
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 >
@@ -272,6 +216,7 @@ const AddEmployee = () => {
               <div>
                 <select
                   name="status"
+                  value={employee.status}
                   onChange={handleChange}
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 >
@@ -286,7 +231,7 @@ const AddEmployee = () => {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                Add Employee
+                Update Employee
               </button>
             </div>
           </div>
@@ -296,4 +241,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default Edit;

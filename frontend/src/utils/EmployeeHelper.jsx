@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const fetchDepartments = async () => {
   let departments;
@@ -121,20 +122,34 @@ const colums = [
 ];
 
 const EmployeeButtons = ({ _id, onEmployeeDelete }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex items-center gap-3">
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-blue-100">
+      <button
+        className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-blue-100"
+        onClick={() => navigate(`/admin-dashboard/employees/${_id}`)}
+      >
         <span class="material-symbols-rounded text-blue-600">edit</span>
       </button>
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-green-100">
+      <button
+        className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-green-100"
+        onClick={() => navigate(`/admin-dashboard/employees/salary/${_id}`)}
+      >
         <span class="material-symbols-rounded text-green-600">money</span>
       </button>
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-yellow-100">
+      <button
+        className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-yellow-100"
+        onClick={() => navigate(`/admin-dashboard/employees/view/${_id}`)}
+      >
         <span class="material-symbols-rounded text-yellow-600">
           account_box
         </span>
       </button>
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-red-100">
+      <button
+        className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-red-100"
+        onClick={() => navigate(`/admin-dashboard/employees/leave/${_id}`)}
+      >
         <span class="material-symbols-rounded text-red-600">priority</span>
       </button>
     </div>
