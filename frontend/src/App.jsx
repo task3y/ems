@@ -14,6 +14,7 @@ import View from './components/employee/View';
 import Edit from './components/employee/Edit';
 import Salary from './components/employee/Salary';
 import Leave from './components/employee/Leave';
+import AddSalary from './components/salary/AddSalary';
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
             path="/admin-dashboard/employees/leave/:id"
             element={<Leave />}
           />
+          <Route path="/admin-dashboard/salary/add" element={<AddSalary />} />
         </Route>
 
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />

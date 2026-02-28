@@ -136,6 +136,21 @@ const deleteEmployee = async (req, res) => {
   }
 };
 
+const fetchEmployeesByDepID = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const employees = await Employee.find({ department: id });
+    return res.status(200).json({ success: true, employees });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        success: false,
+        error: "get employess by department id Server error",
+      });
+  }
+};
+
 export {
   addEmployee,
   getEmployees,
@@ -143,4 +158,5 @@ export {
   updateEmployee,
   deleteEmployee,
   getEmployee,
+  fetchEmployeesByDepID,
 };

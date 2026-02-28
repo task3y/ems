@@ -20,6 +20,30 @@ const fetchDepartments = async () => {
   return departments;
 };
 
+// fetching employees of a department for salary form
+
+const getEmployees = async (id) => {
+  let employees;
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/employee/department/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    if (response.data.success) {
+      employees = response.data.employees;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      alert(error.response.data.error);
+    }
+  }
+  return employees;
+};
+
 const colums = [
   {
     name: 'Employee Name',
@@ -130,19 +154,19 @@ const EmployeeButtons = ({ _id, onEmployeeDelete }) => {
         className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-blue-100"
         onClick={() => navigate(`/admin-dashboard/employees/${_id}`)}
       >
-        <span class="material-symbols-rounded text-blue-600">edit</span>
+        <span className="material-symbols-rounded text-blue-600">edit</span>
       </button>
       <button
         className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-green-100"
         onClick={() => navigate(`/admin-dashboard/employees/salary/${_id}`)}
       >
-        <span class="material-symbols-rounded text-green-600">money</span>
+        <span className="material-symbols-rounded text-green-600">money</span>
       </button>
       <button
         className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-yellow-100"
         onClick={() => navigate(`/admin-dashboard/employees/view/${_id}`)}
       >
-        <span class="material-symbols-rounded text-yellow-600">
+        <span className="material-symbols-rounded text-yellow-600">
           account_box
         </span>
       </button>
@@ -150,9 +174,9 @@ const EmployeeButtons = ({ _id, onEmployeeDelete }) => {
         className="w-9 h-9 flex items-center justify-center rounded-xl transition hover:bg-red-100"
         onClick={() => navigate(`/admin-dashboard/employees/leave/${_id}`)}
       >
-        <span class="material-symbols-rounded text-red-600">priority</span>
+        <span className="material-symbols-rounded text-red-600">priority</span>
       </button>
     </div>
   );
 };
-export { colums, EmployeeButtons, fetchDepartments };
+export { colums, EmployeeButtons, fetchDepartments, getEmployees };
