@@ -15,6 +15,8 @@ import Edit from './components/employee/Edit';
 import Salary from './components/employee/Salary';
 import Leave from './components/employee/Leave';
 import AddSalary from './components/salary/AddSalary';
+import EmployeeSummary from './components/EmployeeDashboard/EmployeeSummary';
+import Profile from './components/EmployeeDashboard/Profile';
 
 function App() {
   return (
@@ -68,8 +70,20 @@ function App() {
           />
           <Route path="/admin-dashboard/salary/add" element={<AddSalary />} />
         </Route>
+        <Route
+          path="/employee-dashboard"
+          element={
+            <PrivateRoutes>
+              <RoleBaseRoutes requiredRole={['employee']}>
+                <EmployeeDashboard />
+              </RoleBaseRoutes>
+            </PrivateRoutes>
+          }
+        >
+          <Route index element={<EmployeeSummary />} />
 
-        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+          <Route path="/employee-dashboard/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
