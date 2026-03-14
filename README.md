@@ -62,7 +62,7 @@ _Backend_
 
 <img src="frontend/src/assets/login.png" width="800">
 <img src="frontend/src/assets/adminDashboard.png" width="800">
-<img src="frontend/src/assets/department.png" width="800">
+<img src="frontend/src/assets/departments.png" width="800">
 <img src="frontend/src/assets/employee.png" width="800">
 
 **Author**
