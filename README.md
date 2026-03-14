@@ -59,8 +59,9 @@ _Backend_
 - _Kubernetes Deployment_
 
 **Screenshots**
+
+<img src="frontend/src/assets/login.png" width="800">
 <img src="frontend/src/assets/adminDashboard.png" width="800">
-<img src="assets/admindashboard.png" width="800">
 <img src="assets/department.png" width="800">
 <img src="assets/employee.png" width="800">
 
