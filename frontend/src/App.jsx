@@ -17,7 +17,8 @@ import Leave from './components/employee/Leave';
 import AddSalary from './components/salary/AddSalary';
 import EmployeeSummary from './components/EmployeeDashboard/EmployeeSummary';
 import Profile from './components/EmployeeDashboard/Profile';
-
+import List from './components/leaves/list';
+import Addleave from './components/leaves/addleave';
 function App() {
   return (
     <BrowserRouter>
@@ -82,7 +83,9 @@ function App() {
         >
           <Route index element={<EmployeeSummary />} />
 
-          <Route path="/employee-dashboard/profile" element={<Profile />} />
+          <Route path="/employee-dashboard/profile/:id" element={<View />} />
+          <Route path="/employee-dashboard/leaves" element={<List />} />
+          <Route path="/employee-dashboard/add-leave" element={<Addleave />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,6 @@ import authMiddleware from "../middleware/authMiddleware.js";
 import {
   getEmployees,
   addEmployee,
-  editEmployee,
   updateEmployee,
   deleteEmployee,
   getEmployee,

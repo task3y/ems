@@ -10,6 +10,7 @@ const AddEmployee = () => {
   const [employeeName, setEmployeeName] = useState({
     name: '',
     email: '',
+    employeeId: '',
     phoneNumber: '',
     status: 'Active',
     department: '',
@@ -88,6 +89,24 @@ const AddEmployee = () => {
                   name="name"
                   onChange={handleChange}
                   placeholder="Insert Name"
+                  className="border border-gray-200 rounded-lg p-3 bg-white w-full"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-700 mb-2 block"
+              >
+                Employee ID
+              </label>
+              <div>
+                <input
+                  type="text"
+                  id="employeeId"
+                  name="employeeId"
+                  onChange={handleChange}
+                  placeholder="Insert ID"
                   className="border border-gray-200 rounded-lg p-3 bg-white w-full"
                 />
               </div>
